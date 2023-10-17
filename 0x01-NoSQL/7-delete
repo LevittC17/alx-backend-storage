@@ -1,0 +1,5 @@
+// Connect to MongoDB and delete all documents with name="Holberton school
+mongo "$1" <<EOF
+db.school.deleteMany({ name: "Holberton school"})
+exit
+EOF
