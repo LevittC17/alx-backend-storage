@@ -1,0 +1,5 @@
+// Run the MongoDB shell to list databases
+mongosh << EOF
+show dbs
+exit
+EOF
