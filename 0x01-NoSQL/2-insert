@@ -1,5 +1,5 @@
 // Connect to MongoDB and insert a document
 mongo "$1" <<EOF
-db.school.insert_one({ name: "Holberton school"})
+db.school.insert({ name: "Holberton school" })
 exit
 EOF
