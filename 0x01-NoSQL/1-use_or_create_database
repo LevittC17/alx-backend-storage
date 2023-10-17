@@ -1,0 +1,5 @@
+// Connect to MongoDB and switch to the my_db database
+mongo << EOF
+use my_db
+exit
+EOF
