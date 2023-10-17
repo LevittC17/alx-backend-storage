@@ -1,0 +1,5 @@
+// Connect to MongoDB and list all documents with name="Holberton school" in the school collection
+mongo "$1" <<EOF
+db.school.find({ name: "Holberton school" })
+exit
+EOF
