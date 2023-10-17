@@ -1,0 +1,5 @@
+// Connect to MongoDB and display the count of documents in the school collection
+mongo "$1" <<EOF
+db.school.count()
+exit
+EOF
