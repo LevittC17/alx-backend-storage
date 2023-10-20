@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-'''
+"""
 Main file
-'''
+"""
 
 
 import redis
@@ -12,16 +12,16 @@ from functools import wraps
 
 
 def call_history(method: Callable) -> Callable:
-    '''
+    """
     Decorator to store the history of inputs and outputs for
     a function
 
-    :param method: The method to be decorated
-    :return: Decorated method
-    '''
+    :param method: The method to be Decorated
+    :return: The decorated method
+    """
     @wraps(method)
-    def wrapper(self, *args, **Kwargs):
-        '''Get the qualified name of the method'''
+    def wrapper(self, *args, **kwargs):
+        """Get the qualified name of the method"""
         key = method.__qualname__
 
         # Store the input arguments as a string in Redis
@@ -42,18 +42,18 @@ def call_history(method: Callable) -> Callable:
 
 class Cache:
     def __init__(self):
-        '''Cache class to interact with Redis'''
+        """Cache class to interact with Redis"""
         self._redis = redis.Redis()
         self._redis.flushdb()
 
     @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        '''
+        """
         Store data in Redis and return the key
 
         :param data: Data to be stored (str, bytes, int or float)
         :return: Randomly generated key used for storage
-        '''
+        """
         key = str(uuid.uuid4())
         if isinstance(data, (str, bytes, int, float)):
             self._redis.set(key, data)
@@ -61,20 +61,25 @@ class Cache:
         else:
             raise ValueError('Data must be str, bytes, int or float')
 
+    @property
+    def redis(self):
+        return self._redis
+
 
 def replay(func: Callable) -> None:
-    '''
+    """
     Display the history of calls of a particular function
-    '''
+    """
     key = func.__qualname__
-    inputs = cache._redis.lrange(f'{key}:inputs', 0, -1)
-    outputs = cache._redis.lrange(f'{key}:outputs', 0, -1)
+    inputs = cache.redis.lrange(f'{key}:inputs', 0, -1)
+    outputs = cache.redis.lrange(f'{key}:outputs', 0, -1)
 
     if inputs:
         print(f'{key} was called {len(inputs)} times:')
         for input_args, output in zip(inputs, outputs):
             # Convert the string back to a tuple
             input_args = eval(input_args.decode('utf-8'))
+            print(f"{key}(*{input_args}) -> {output.decode('utf-8')}")
 
 
 if __name__ == "__main__":
