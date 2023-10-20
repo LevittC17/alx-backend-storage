@@ -1,0 +1,18 @@
+// Get the database name from the command line arguments
+var args = process.argv.slice(2);
+var dbName = args[0];
+
+// Connect to the MongoDB server
+var conn = new Mongo();
+var db = conn.getDB(dbName);
+
+// Define a regular expression to match names starting with "Holberton"
+var regex = /^Holberton/;
+
+// Query the "school" collection for documents with matching names
+var cursor = db.school.find({ name: { $regex: regex, $options: 'i' } });
+
+// Iterate over the cursor and print the matching documents
+while (cursor.hasNext()) {
+  printjson(cursor.next());
+}
