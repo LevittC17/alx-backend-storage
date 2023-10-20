@@ -1,8 +1,5 @@
 // Connect to MongoDB and update all documents with the name="Holberton school"
-mongo "$1" <<EOF
 db.school.updateMany(
   { name: "Holberton school" },
   { \$set: { address: "972 Mission street" } }
 )
-exit
-EOF
