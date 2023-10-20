@@ -1,6 +1,6 @@
 // Connect to MongoDB and update all documents with the name="Holberton school"
 db.school.update(
-  { name: "Holberton school"},
-  { "$set": { address: "972 Mission street } },
-  { multi: true }
+  {name: "Holberton school"},
+  {$set: { address: "972 Mission street"}},
+  {multi: true}
 );
