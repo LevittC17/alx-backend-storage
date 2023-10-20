@@ -62,18 +62,26 @@ class Cache:
             raise ValueError('Data must be str, bytes, int or float')
 
 
+def replay(func: Callable) -> None:
+    '''
+    Display the history of calls of a particular function
+    '''
+    key = func.__qualname__
+    inputs = cache._redis.lrange(f'{key}:inputs', 0, -1)
+    outputs = cache._redis.lrange(f'{key}:outputs', 0, -1)
+
+    if inputs:
+        print(f'{key} was called {len(inputs)} times:')
+        for input_args, output in zip(inputs, outputs):
+            # Convert the string back to a tuple
+            input_args = eval(input_args.decode('utf-8'))
+
+
 if __name__ == "__main__":
     cache = Cache()
 
-    s1 = cache.store('first')
-    print(s1)
-    s2 = cache.store('second')
-    print(s2)
-    s3 = cache.store('third')
-    print(s3)
+    s1 = cache.store('foo')
+    s2 = cache.store('bar')
+    s3 = cache.store(42)
 
-    inputs = cache._redis.lrange(f'{cache.store.__qualnamr__}:inputs', 0, -1)
-    outputs = cache._redis.lrange(f'{cache.store.__qualname__}:outputs', 0, -1)
-
-    print('inputs: {}'.format(inputs))
-    print('outputs: {}'.format(outputs))
+    replay(cache.store)
