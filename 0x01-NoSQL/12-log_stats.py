@@ -10,7 +10,7 @@ from pymongo import MongoClient
 
 
 def log_stats():
-    # Connect to the MongoDB server
+    '''Connect to the MongoDB server'''
     client = MongoClient('mongodb://127.0.0.1:27017')
     db = client.logs
     collection = db.nginx
@@ -31,7 +31,7 @@ def log_stats():
     print(f"{total_logs} logs")
     print("Methods:")
     for method, count in method_counts.items():
-        print(f"    method {method}: {count}")
+        print(f"method {method}: {count}")
     print(f"{status_check_count} status check")
 
 
