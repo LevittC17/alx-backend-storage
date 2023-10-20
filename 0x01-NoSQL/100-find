@@ -6,11 +6,11 @@ var dbName = args[0];
 var conn = new Mongo();
 var db = conn.getDB(dbName);
 
-// Define a regular expression to match names starting with "Holberton"
-var regex = /^Holberton/;
+// Define a regular expression to match names starting with "Holberton" (case-insensitive)
+var regex = new RegExp("^Holberton", "i");
 
 // Query the "school" collection for documents with matching names
-var cursor = db.school.find({ name: { $regex: regex, $options: 'i' } });
+var cursor = db.school.find({ name: regex });
 
 // Iterate over the cursor and print the matching documents
 while (cursor.hasNext()) {
