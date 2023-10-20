@@ -9,5 +9,10 @@
 
 def schools_by_topic(mongo_collection, topic):
     '''returns a list of schools having a specific topic'''
-    schools = list(mongo_collection.find({"topic": topic}))
-    return schools
+    matching_sch = []
+
+    for school in mongo_collection.find():
+        if 'topics' in school and topic in school['topics']:
+            matching_sch.append(school)
+
+    return matching_sch
